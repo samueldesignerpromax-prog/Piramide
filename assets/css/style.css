@@ -1,0 +1,47 @@
+// JavaScript para funcionalidades adicionais
+document.addEventListener('DOMContentLoaded', function() {
+    // Confirmar ações importantes
+    const botoesExcluir = document.querySelectorAll('.btn-excluir');
+    botoesExcluir.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            if(!confirm('Tem certeza que deseja excluir este item?')) {
+                e.preventDefault();
+            }
+        });
+    });
+    
+    // Máscara para preços
+    const camposPreco = document.querySelectorAll('.campo-preco');
+    camposPreco.forEach(campo => {
+        campo.addEventListener('input', function(e) {
+            let valor = this.value.replace(/\D/g, '');
+            valor = (valor / 100).toFixed(2) + '';
+            valor = valor.replace('.', ',');
+            valor = valor.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+            this.value = valor;
+        });
+    });
+    
+    // Validação de formulários
+    const formularios = document.querySelectorAll('form');
+    formularios.forEach(form => {
+        form.addEventListener('submit', function(e) {
+            const camposObrigatorios = form.querySelectorAll('[required]');
+            let valido = true;
+            
+            camposObrigatorios.forEach(campo => {
+                if(!campo.value.trim()) {
+                    campo.classList.add('is-invalid');
+                    valido = false;
+                } else {
+                    campo.classList.remove('is-invalid');
+                }
+            });
+            
+            if(!valido) {
+                e.preventDefault();
+                alert('Por favor, preencha todos os campos obrigatórios.');
+            }
+        });
+    });
+});
