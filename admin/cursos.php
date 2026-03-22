@@ -130,4 +130,66 @@ $cursos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <option value="">Selecione...</option>
                             <?php foreach($categorias as $cat): ?>
                                 <option value="<?php echo $cat['id']; ?>" 
-                                    <?php echo ($curso_editar && $
+                                    <?php echo ($curso_editar && $curso_editar['categoria_id'] == $cat['id']) ? 'selected' : ''; ?>>
+                                    <?php echo $cat['nome']; ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="destaque" name="destaque" 
+                               <?php echo ($curso_editar && $curso_editar['destaque']) ? 'checked' : ''; ?>>
+                        <label class="form-check-label" for="destaque">Curso em Destaque</label>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Salvar Curso</button>
+                    <?php if($curso_editar): ?>
+                        <a href="cursos.php" class="btn btn-secondary">Cancelar</a>
+                    <?php endif; ?>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4>Lista de Cursos</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Título</th>
+                                <th>Preço</th>
+                                <th>Categoria</th>
+                                <th>Destaque</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach($cursos as $curso): ?>
+                            <tr>
+                                <td><?php echo $curso['id']; ?></td>
+                                <td><?php echo $curso['titulo']; ?></td>
+                                <td>R$ <?php echo number_format($curso['preco'], 2, ',', '.'); ?></td>
+                                <td><?php echo $curso['categoria_nome']; ?></td>
+                                <td><?php echo $curso['destaque'] ? 'Sim' : 'Não'; ?></td>
+                                <td>
+                                    <a href="?editar=<?php echo $curso['id']; ?>" class="btn btn-sm btn-warning">Editar</a>
+                                    <a href="?excluir=<?php echo $curso['id']; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Tem certeza?')">Excluir</a>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php require_once '../includes/footer.php'; ?>
